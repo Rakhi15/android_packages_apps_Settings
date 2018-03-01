@@ -165,4 +165,7 @@
     <string name="qs_tile_style_squircle">Squircle</string>
     <string name="qs_tile_style_tear_drop">Tear drop</string>
 
+    <!-- Font picker -->
+    <string name="font_picker_title">Font</string>
+
 </resources>
