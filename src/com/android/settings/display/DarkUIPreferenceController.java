@@ -23,10 +23,7 @@ import android.support.v7.preference.PreferenceScreen;
 import android.provider.Settings;
 
 import com.android.settingslib.core.AbstractPreferenceController;
-import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.drawer.SettingsDrawerActivity;
-
-import com.android.internal.util.stag.StagUtils;
 
 import libcore.util.Objects;
 import java.util.ArrayList;
@@ -38,10 +35,9 @@ import android.os.Handler;
 import android.widget.Toast;
 
 public class DarkUIPreferenceController extends AbstractPreferenceController implements
-       PreferenceControllerMixin, Preference.OnPreferenceChangeListener {
+        Preference.OnPreferenceChangeListener {
 
     private static final String SYSTEM_UI_THEME = "systemui_theme_style";
-    private static final String SUBS_PACKAGE = "projekt.substratum";
     private ListPreference mSystemUiThemeStyle;
 
     public DarkUIPreferenceController(Context context) {
@@ -62,17 +58,12 @@ public class DarkUIPreferenceController extends AbstractPreferenceController imp
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
         mSystemUiThemeStyle = (ListPreference) screen.findPreference(SYSTEM_UI_THEME);
-	if (!StagUtils.isPackageInstalled(mContext, SUBS_PACKAGE)) {
-        	int systemuiThemeStyle = Settings.System.getInt(mContext.getContentResolver(),
-                	Settings.System.SYSTEM_UI_THEME, 0);
-        	int valueIndex = mSystemUiThemeStyle.findIndexOfValue(String.valueOf(systemuiThemeStyle));
-        	mSystemUiThemeStyle.setValueIndex(valueIndex >= 0 ? valueIndex : 0);
-        	mSystemUiThemeStyle.setSummary(mSystemUiThemeStyle.getEntry());
-        	mSystemUiThemeStyle.setOnPreferenceChangeListener(this);
-	} else {
-	    mSystemUiThemeStyle.setEnabled(false);
-            mSystemUiThemeStyle.setSummary(R.string.disable_themes_installed_title);
-        }
+        int systemuiThemeStyle = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SYSTEM_UI_THEME, 0);
+        int valueIndex = mSystemUiThemeStyle.findIndexOfValue(String.valueOf(systemuiThemeStyle));
+        mSystemUiThemeStyle.setValueIndex(valueIndex >= 0 ? valueIndex : 0);
+        mSystemUiThemeStyle.setSummary(mSystemUiThemeStyle.getEntry());
+        mSystemUiThemeStyle.setOnPreferenceChangeListener(this);
     }
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {

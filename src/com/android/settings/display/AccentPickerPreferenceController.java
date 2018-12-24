@@ -31,14 +31,10 @@ import com.android.settingslib.core.lifecycle.events.OnResume;
 
 import com.android.settings.stag.AccentPicker;
 
-import com.android.internal.util.stag.StagUtils;
-
 public class AccentPickerPreferenceController extends AbstractPreferenceController
         implements PreferenceControllerMixin, LifecycleObserver, OnResume {
 
     private static final String KEY_ACCENT_PICKER_FRAGMENT_PREF = "accent_picker";
-    private static final String SUBS_PACKAGE = "projekt.substratum";
-
     private static final int MY_USER_ID = UserHandle.myUserId();
 
     private final Fragment mParent;
@@ -55,11 +51,6 @@ public class AccentPickerPreferenceController extends AbstractPreferenceControll
     @Override
     public void displayPreference(PreferenceScreen screen) {
         mAccentPickerPref  = (Preference) screen.findPreference(KEY_ACCENT_PICKER_FRAGMENT_PREF);
-        if (!StagUtils.isPackageInstalled(mContext, SUBS_PACKAGE)) {
-            mAccentPickerPref.setEnabled(true);
-        } else {
-            mAccentPickerPref.setEnabled(false);
-        }
     }
 
     @Override
@@ -87,25 +78,16 @@ public class AccentPickerPreferenceController extends AbstractPreferenceControll
             new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                   if (!StagUtils.isPackageInstalled(mContext, SUBS_PACKAGE)) {
-                        AccentPicker.show(mParent);
-                        return true;
-                   } else {
-                        return false;
-                   }
+                    AccentPicker.show(mParent);
+                    return true;
                 }
             });
     }
 
     public void updateSummary() {
         if (mAccentPickerPref != null) {
-            if (!StagUtils.isPackageInstalled(mContext, SUBS_PACKAGE)) {
                 mAccentPickerPref.setSummary(mContext.getString(
                         com.android.settings.R.string.theme_accent_picker_summary));
-            } else {
-                mAccentPickerPref.setSummary(mContext.getString(
-                        com.android.settings.R.string.disable_accents_installed_title));
-            }
         }
     }
 
